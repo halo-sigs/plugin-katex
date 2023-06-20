@@ -2,10 +2,10 @@ import { fileURLToPath, URL } from "url";
 
 import { defineConfig } from "vite";
 import Vue from "@vitejs/plugin-vue";
-import VueJsx from "@vitejs/plugin-vue-jsx";
 import Icons from "unplugin-icons/vite";
+import { viteStaticCopy as ViteStaticCopy } from "vite-plugin-static-copy";
 
-const pluginEntryName = "PluginStarter";
+const pluginEntryName = "plugin-katex";
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
@@ -15,7 +15,18 @@ export default ({ mode }: { mode: string }) => {
     : "../build/resources/main/console";
 
   return defineConfig({
-    plugins: [Vue(), VueJsx(), Icons({ compiler: "vue3" })],
+    plugins: [
+      Vue(),
+      Icons({ compiler: "vue3" }),
+      ViteStaticCopy({
+        targets: [
+          {
+            src: `./node_modules/katex/dist/*`,
+            dest: "../static",
+          },
+        ],
+      }),
+    ],
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
