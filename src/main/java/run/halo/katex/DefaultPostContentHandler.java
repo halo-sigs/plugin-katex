@@ -8,7 +8,7 @@ import run.halo.app.theme.ReactivePostContentHandler;
 public class DefaultPostContentHandler implements ReactivePostContentHandler {
 
     @Override
-    public Mono<PostContent> handle(PostContent postContent) {
+    public Mono<PostContentContext> handle(PostContentContext postContent) {
 
         String katexScript = """
             <link rel="stylesheet" href="/plugins/plugin-katex/assets/static/katex.min.css">

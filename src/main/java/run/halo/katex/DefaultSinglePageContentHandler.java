@@ -8,7 +8,7 @@ import run.halo.app.theme.ReactiveSinglePageContentHandler;
 public class DefaultSinglePageContentHandler implements ReactiveSinglePageContentHandler {
 
     @Override
-    public Mono<SinglePageContent> handle(SinglePageContent postContent) {
+    public Mono<SinglePageContentContext> handle(SinglePageContentContext singlePageContentContext) {
 
         String katexScript = """
             <link rel="stylesheet" href="/plugins/plugin-katex/assets/static/katex.min.css">
@@ -32,7 +32,7 @@ public class DefaultSinglePageContentHandler implements ReactiveSinglePageConten
             </script>
             """;
 
-        postContent.setContent(katexScript + "\n" + postContent.getContent());
-        return Mono.just(postContent);
+        singlePageContentContext.setContent(katexScript + "\n" + singlePageContentContext.getContent());
+        return Mono.just(singlePageContentContext);
     }
 }
