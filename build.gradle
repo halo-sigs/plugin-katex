@@ -2,10 +2,10 @@ plugins {
     id 'java'
     id "com.github.node-gradle.node" version "5.0.0"
     id "io.freefair.lombok" version "8.0.1"
-    id "run.halo.plugin.devtools" version "0.0.4"
+    id "run.halo.plugin.devtools" version "0.0.5"
 }
 
-group 'run.halo.starter'
+group 'run.halo.katex'
 sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('run.halo.tools.platform:plugin:2.6.0-SNAPSHOT')
+    implementation platform('run.halo.tools.platform:plugin:2.7.0-SNAPSHOT')
     compileOnly 'run.halo.app:api'
 
     testImplementation 'run.halo.app:api'
