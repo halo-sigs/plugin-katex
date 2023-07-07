@@ -39,10 +39,12 @@ onMounted(() => {
     contenteditable="false"
     :class="{ 'katex-node-view-selected': props.selected }"
   >
-    <!-- 动态class -->
     <span
       class="katex-node-view-content-wrapper"
-      :class="{ 'katex-node-view-content-wrapper-inline': !isBlock }"
+      :class="{
+        'katex-node-view-content-wrapper-inline': !isBlock,
+        'katex-node-view-content-wrapper-block': isBlock,
+      }"
     >
       <VDropdown :distance="12" placement="bottom">
         <span
@@ -56,7 +58,14 @@ onMounted(() => {
             contenteditable="false"
             v-html="renderedKatex"
           />
-          <span v-else class="katex-node-view-content-placeholder">
+          <span
+            v-else
+            class="katex-node-view-content-placeholder"
+            :class="{
+              'katex-display-placeholder': isBlock,
+              'katex-inline-placeholder': !isBlock,
+            }"
+          >
             添加LaTeX公式
           </span>
         </span>
@@ -78,22 +87,34 @@ onMounted(() => {
   cursor: pointer;
   padding: 0 0.25rem;
   transition: background 0.2s;
+  --selected-bg: #ccc content-box;
 }
 .katex-node-view-selected {
-  background: #ccc;
+  background: var(--selected-bg);
 }
 .katex-node-view-content-wrapper {
   &:hover {
-    background: #ccc !important;
+    background: var(--selected-bg);
   }
+}
+.katex-node-view-content-wrapper-block {
+  display: block;
 }
 .katex-node-view-content-wrapper-inline {
   display: inline-block;
 }
 .katex-node-view-content-placeholder {
+  background: #f4f5f5;
+  &:hover {
+    background: var(--selected-bg);
+  }
+}
+.katex-display-placeholder {
   display: block;
   margin: 1em 0;
   text-align: center;
-  background: rgb(244, 245, 245);
+}
+.katex-inline-placeholder {
+  display: inline-block;
 }
 </style>
