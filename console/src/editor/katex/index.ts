@@ -7,9 +7,10 @@ import {
 } from "@tiptap/vue-3";
 import KatexRenderComponent from "./KatexRender.vue";
 
-export const inlineInputRegex = /(?:^|\s)((?:\$)((?:[^*]+))(?:\$))$/;
-export const inlinePasteRegex = /(?:^|\s)((?:\$)((?:[^*]+))(?:\$))/g;
+export const inlineInputRegex = /(?:^|\s)((?:\$)((?:[^$]+))(?:\$))$/;
+export const inlinePasteRegex = /(?:^|\s)((?:\$)((?:[^$]+))(?:\$))/g;
 export const blockInputRegex = /^\$\$[\s\n]$/;
+export const blockPasteRegex = /^\$\$((?:[^$]+))\$\$/g;
 
 export const ExtensionKatexInline = Node.create({
   name: "vueKatexInline",
@@ -129,6 +130,20 @@ export const ExtensionKatexBlock = Node.create({
           return {
             content: "",
             editMode: true,
+          };
+        },
+      }),
+    ];
+  },
+  addPasteRules() {
+    return [
+      nodePasteRule({
+        find: blockPasteRegex,
+        type: this.type,
+        getAttributes: (match) => {
+          return {
+            content: match[1],
+            editMode: false,
           };
         },
       }),
