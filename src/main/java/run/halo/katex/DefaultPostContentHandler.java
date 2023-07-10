@@ -1,38 +1,36 @@
 package run.halo.katex;
 
+import com.google.common.base.Throwables;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import run.halo.app.plugin.ReactiveSettingFetcher;
 import run.halo.app.theme.ReactivePostContentHandler;
 
 @Component
+@RequiredArgsConstructor
+@Slf4j
 public class DefaultPostContentHandler implements ReactivePostContentHandler {
 
+    private final ReactiveSettingFetcher reactiveSettingFetcher;
+
+    private static void injectJS(PostContentContext contentContext, String inline_selector,
+        String display_selector) {
+        String parsedKatexScript =
+            KaTeXJSInjector.getParsedKatexScript(inline_selector, display_selector);
+        contentContext.setContent(parsedKatexScript + "\n" + contentContext.getContent());
+    }
+
     @Override
-    public Mono<PostContentContext> handle(PostContentContext postContent) {
-
-        String katexScript = """
-            <link rel="stylesheet" href="/plugins/plugin-katex/assets/static/katex.min.css">
-            <script defer src="/plugins/plugin-katex/assets/static/katex.min.js"></script>
-            <script defer src="/plugins/plugin-katex/assets/static/contrib/auto-render.min.js"></script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    renderMathInElement(document.body, {
-                      // customised options
-                      // • auto-render specific keys, e.g.:
-                      delimiters: [
-                          {left: '$$', right: '$$', display: true},
-                          {left: '$', right: '$', display: false},
-                          {left: '\\(', right: '\\)', display: false},
-                          {left: '\\[', right: '\\]', display: true}
-                      ],
-                      // • rendering keys, e.g.:
-                      throwOnError : false
-                    });
-                });
-            </script>
-            """;
-
-        postContent.setContent(katexScript + "\n" + postContent.getContent());
-        return Mono.just(postContent);
+    public Mono<PostContentContext> handle(PostContentContext contentContext) {
+        return reactiveSettingFetcher.fetch("basic", BasicConfig.class).map(basicConfig -> {
+            injectJS(contentContext, basicConfig.getInline_selector(),
+                basicConfig.getDisplay_selector());
+            return contentContext;
+        }).onErrorResume(e -> {
+            log.error("KaTeX PostContent handle failed", Throwables.getRootCause(e));
+            return Mono.just(contentContext);
+        });
     }
 }

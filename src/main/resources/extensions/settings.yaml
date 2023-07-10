@@ -1,0 +1,19 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: plugin-katex-settings
+spec:
+  forms:
+    - group: basic
+      label: 基本设置
+      formSchema:
+        - $formkit: text
+          name: inline_selector
+          label: 行内公式CSS选择器
+          value: "[math-inline]"
+          help: 用于匹配行内公式的CSS选择器
+        - $formkit: text
+          name: display_selector
+          label: 块级公式CSS选择器
+          value: "[math-display]"
+          help: 用于匹配块级公式的CSS选择器

@@ -12,6 +12,8 @@ spec:
   homepage: https://github.com/halo-sigs/plugin-katex
   displayName: "KaTeX"
   description: "为编辑器和文章渲染提供 KaTeX 支持"
+  settingName: plugin-katex-settings
+  configMapName: plugin-katex-configMap
   license:
     - name: "GPL-3.0"
       url: "https://github.com/halo-sigs/plugin-katex/blob/main/LICENSE"

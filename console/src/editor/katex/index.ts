@@ -36,7 +36,7 @@ export const ExtensionKatexInline = Node.create({
   parseHTML() {
     return [
       {
-        tag: "span[display-inline]",
+        tag: "span[math-inline]",
       },
     ];
   },
@@ -44,8 +44,8 @@ export const ExtensionKatexInline = Node.create({
   renderHTML({ HTMLAttributes }) {
     return [
       "span",
-      mergeAttributes(HTMLAttributes, { "display-inline": "" }),
-      `$${HTMLAttributes.content}$`,
+      mergeAttributes(HTMLAttributes, { "math-inline": "" }),
+      `${HTMLAttributes.content}`,
     ];
   },
 
@@ -105,7 +105,7 @@ export const ExtensionKatexBlock = Node.create({
   parseHTML() {
     return [
       {
-        tag: "div[display-block]",
+        tag: "div[math-display]",
       },
     ];
   },
@@ -113,8 +113,8 @@ export const ExtensionKatexBlock = Node.create({
   renderHTML({ HTMLAttributes }) {
     return [
       "div",
-      mergeAttributes(HTMLAttributes, { "display-block": "" }),
-      `$$${HTMLAttributes.content}$$`,
+      mergeAttributes(HTMLAttributes, { "math-display": "" }),
+      `${HTMLAttributes.content}`,
     ];
   },
 
