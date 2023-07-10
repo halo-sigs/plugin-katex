@@ -15,9 +15,33 @@
 
 在默认编辑器中，使用 `$` 开头和结尾的语句将会被渲染为 KaTeX 行内公式，输入 `$$` 并回车可以插入 KaTeX 块级公式。
 
-### 其他编辑器
+### 文章页渲染公式
+此插件安装之后，文章页使用KaTeX.js渲染公式，插件支持2个配置项。
+1. inline_selector
+   
+CSS-Selector语法，用来查找渲染的行内公式Dom。
 
-此插件不仅对默认编辑器提供了输入支持，其他编辑器也可以使用 KaTeX 语法，并实现在文章中渲染，块级公式使用 `$$` 包裹，行内公式使用 `$` 包裹 即可。
+默认值为：`[math-inline]`（本插件扩展默认编辑器生成的行内公式Dom），如需兼容其他编辑器，则设置为相应的Selector即可。
+
+example:
+
+bytemd: `.math-inline`
+
+stackedit: `.katex--inline`
+
+如同时使用多个编辑器，CSS Selector之间用`,`隔开即可。
+
+example：`[math-inline],.math-inline,.katex--inline`
+
+2. display_selector
+
+CSS-Selector语法，用来查找渲染的块级公式Dom。
+
+默认值为：`[math-display]`
+
+bytemd: `.math-display`
+
+stackedit: `.katex--display`
 
 ## 开发环境
 
