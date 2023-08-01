@@ -4,6 +4,7 @@ import { nodeViewProps, NodeViewWrapper } from "@tiptap/vue-3";
 import katex from "katex";
 import "katex/dist/katex.css";
 import { Dropdown as VDropdown } from "floating-vue";
+import { useElementSize } from "@vueuse/core";
 
 const props = defineProps(nodeViewProps);
 
@@ -25,12 +26,16 @@ const clickKatex = () => {
   props.editor.commands.setNodeSelection(props.getPos());
 };
 
-const katexNodeViewContentRef: Ref<HTMLElement | null> = ref(null);
+const katexNodeViewContentRef = ref<Ref<HTMLElement | null>>();
 onMounted(() => {
   if (props.node.attrs.editMode) {
     katexNodeViewContentRef.value?.click();
   }
 });
+
+const { width: katexContentEditorWidth } = useElementSize(
+  katexNodeViewContentRef
+);
 </script>
 <template>
   <node-view-wrapper
@@ -47,7 +52,7 @@ onMounted(() => {
       }"
     >
       <VDropdown :distance="12" placement="bottom">
-        <span
+        <div
           ref="katexNodeViewContentRef"
           class="katex-node-view-content"
           @click="clickKatex"
@@ -68,13 +73,14 @@ onMounted(() => {
           >
             添加LaTeX公式
           </span>
-        </span>
+        </div>
         <template #popper>
           <textarea
             :value="node.attrs.content"
             rows="3"
             class="katex-node-view-content-editor"
             placeholder="输入LaTeX公式"
+            :style="{ width: `${katexContentEditorWidth}px` }"
             @input="updateAttributes({ content: $event.target.value })"
           />
         </template>
@@ -87,7 +93,7 @@ onMounted(() => {
   cursor: pointer;
   padding: 0 0.25rem;
   transition: background 0.2s;
-  --selected-bg: #ccc content-box;
+  --selected-bg: rgb(243 244 246) content-box;
 }
 .katex-node-view-selected {
   background: var(--selected-bg);
@@ -116,5 +122,19 @@ onMounted(() => {
 }
 .katex-inline-placeholder {
   display: inline-block;
+}
+.katex-node-view-content-editor {
+  resize: both;
+  border: none;
+  min-width: 400px;
+  min-height: 84px;
+  width: 100%;
+  height: 110px;
+  padding: 6px 6px;
+  line-height: 24px;
+  outline: none;
+  vertical-align: bottom;
+  font-weight: 400;
+  border-radius: 8px;
 }
 </style>
