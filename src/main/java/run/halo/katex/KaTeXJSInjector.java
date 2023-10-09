@@ -6,7 +6,7 @@ public class KaTeXJSInjector {
             <link rel="stylesheet" href="/plugins/plugin-katex/assets/static/katex.min.css">
             <script defer src="/plugins/plugin-katex/assets/static/katex.min.js"></script>
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                window.renderKaTex = () => {
                   const postBody = document.body
                   const renderMath = (selector,displayMode) => {
                     const els = postBody.querySelectorAll(selector)
@@ -18,6 +18,9 @@ public class KaTeXJSInjector {
                     renderMath("%s",false);
                     renderMath("%s",true);
                   }
+                }
+                document.addEventListener("DOMContentLoaded", function() {
+                    window.renderKaTex();
                 });
             </script>
             """;
