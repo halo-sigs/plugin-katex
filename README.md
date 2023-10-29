@@ -16,32 +16,36 @@
 在默认编辑器中，使用 `$` 开头和结尾的语句将会被渲染为 KaTeX 行内公式，输入 `$$` 并回车可以插入 KaTeX 块级公式。
 
 ### 文章页渲染公式
-此插件安装之后，文章页使用KaTeX.js渲染公式，插件支持2个配置项。
-1. inline_selector
-   
-CSS-Selector语法，用来查找渲染的行内公式Dom。
 
-默认值为：`[math-inline]`（本插件扩展默认编辑器生成的行内公式Dom），如需兼容其他编辑器，则设置为相应的Selector即可。
+此插件安装之后，文章页使用 KaTeX.js 渲染公式，插件支持 2 个配置项。
 
-example:
+1. 行内公式 CSS 选择器
 
-bytemd: `.math-inline`
+   CSS Selector 语法，用来查找渲染的行内公式 Dom。
 
-stackedit: `.katex--inline`
+   默认值为：`[math-inline]`（本插件扩展默认编辑器生成的行内公式 Dom），如需兼容其他编辑器，则设置为相应的 Selector 即可。
 
-如同时使用多个编辑器，CSS Selector之间用`,`隔开即可。
+   已知编辑器:
 
-example：`[math-inline],.math-inline,.katex--inline`
+   [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-inline`
 
-2. display_selector
+   [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--inline`
 
-CSS-Selector语法，用来查找渲染的块级公式Dom。
+   如同时使用多个编辑器，CSS Selector 之间用 `,` 隔开即可。
 
-默认值为：`[math-display]`
+   如：`[math-inline],.math-inline,.katex--inline`
 
-bytemd: `.math-display`
+2. 块级公式 CSS 选择器
 
-stackedit: `.katex--display`
+   CSS Selector 语法，用来查找渲染的块级公式 Dom。
+
+   默认值为：`[math-display]`
+
+   已知编辑器:
+
+   [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-display`
+
+   [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--display`
 
 ## 开发环境
 
