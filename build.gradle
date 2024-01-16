@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id "com.github.node-gradle.node" version "5.0.0"
     id "io.freefair.lombok" version "8.0.1"
-    id "run.halo.plugin.devtools" version "0.0.5"
+    id "run.halo.plugin.devtools" version "0.0.7"
 }
 
 group 'run.halo.katex'
@@ -38,4 +38,8 @@ task buildFrontend(type: PnpmTask) {
 build {
     // build frontend before build
     tasks.getByName('compileJava').dependsOn('buildFrontend')
+}
+
+halo {
+    version = '2.11'
 }
