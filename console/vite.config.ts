@@ -53,6 +53,7 @@ export default ({ mode }: { mode: string }) => {
           "@vueuse/router",
           "@halo-dev/shared",
           "@halo-dev/components",
+          "@halo-dev/richtext-editor",
         ],
         output: {
           globals: {
@@ -63,6 +64,7 @@ export default ({ mode }: { mode: string }) => {
             "@vueuse/router": "VueUse",
             "@halo-dev/console-shared": "HaloConsoleShared",
             "@halo-dev/components": "HaloComponents",
+            "@halo-dev/richtext-editor": "RichTextEditor",
           },
           extend: true,
         },
