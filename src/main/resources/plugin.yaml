@@ -6,10 +6,12 @@ spec:
   enabled: true
   requires: ">=2.7.0"
   author:
-    name: Halo OSS Team
+    name: Halo
     website: https://github.com/halo-dev
   logo: logo.png
-  homepage: https://github.com/halo-sigs/plugin-katex
+  repo: https://github.com/halo-sigs/plugin-katex
+  homepage: https://www.halo.run/store/apps/app-ISCsX
+  issues: https://www.halo.run/store/apps/app-ISCsX?tab=comment
   displayName: "KaTeX"
   description: "为编辑器和文章渲染提供 KaTeX 支持"
   settingName: plugin-katex-settings
