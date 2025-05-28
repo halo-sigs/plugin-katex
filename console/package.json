@@ -14,6 +14,7 @@
     "@halo-dev/components": "^1.10.0",
     "@halo-dev/console-shared": "^2.11.0",
     "@halo-dev/richtext-editor": "0.0.0-alpha.33",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.20.21",
     "@vueuse/core": "^10.7.2",
     "floating-vue": "2.0.0-beta.24",
     "katex": "^0.16.9",
@@ -43,5 +44,6 @@
     "vite-plugin-static-copy": "^0.16.0",
     "vitest": "^0.24.5",
     "vue-tsc": "^1.8.27"
-  }
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

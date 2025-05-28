@@ -2,6 +2,8 @@ apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   name: plugin-katex
+  annotations:
+    "store.halo.run/app-id": "app-ISCsX"
 spec:
   enabled: true
   requires: ">=2.10.0"
