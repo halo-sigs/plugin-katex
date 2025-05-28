@@ -44,6 +44,13 @@ tasks.register('installDepsForUI', PnpmTask) {
     args = ['install']
 }
 
+build {
+    // build frontend before build
+    tasks.named('compileJava').configure {
+        dependsOn('buildFrontend')
+    }
+}
+
 halo {
     version = '2.11'
 }
