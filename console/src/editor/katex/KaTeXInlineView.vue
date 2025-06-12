@@ -65,7 +65,7 @@ function onEditorChange(value: string) {
     </VDropdown>
   </node-view-wrapper>
 </template>
-<style lang="scss">
+<style>
 .katex-inline-container {
   cursor: pointer;
   padding: 0 0.25rem;
