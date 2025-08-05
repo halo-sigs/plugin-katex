@@ -19,7 +19,7 @@ public class DefaultSinglePageContentHandler implements ReactiveSinglePageConten
         String display_selector) {
         String parsedKatexScript =
             KaTeXJSInjector.getParsedKatexScript(inline_selector, display_selector);
-        contentContext.setContent(parsedKatexScript + "\n" + contentContext.getContent());
+        contentContext.setContent(contentContext.getContent() + "\n" + parsedKatexScript);
     }
 
     @Override
