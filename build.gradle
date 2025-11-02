@@ -52,6 +52,5 @@ build {
 }
 
 halo {
-    imageName = 'registry.fit2cloud.com/halo/halo'
-    version = '2.21.0-beta.2'
+    version = '2.21.0'
 }
