@@ -13,6 +13,10 @@ export default rsbuildConfig({
       output: {
         distPath: {
           root: outDir,
+          css: "static",
+        },
+        filename: {
+          css: "katex.min.css",
         },
       },
       tools: {

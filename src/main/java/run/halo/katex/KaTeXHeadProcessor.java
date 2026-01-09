@@ -35,7 +35,6 @@ public class KaTeXHeadProcessor implements TemplateHeadProcessor {
 
         return PROPERTY_PLACEHOLDER_HELPER.replacePlaceholders("""
             <!-- plugin-katex start -->
-            <script src="/plugins/plugin-katex/assets/static/katex.min.js?version=${version}"></script>
             <link rel="stylesheet" href="/plugins/plugin-katex/assets/static/katex.min.css?version=${version}" />
             <!-- plugin-katex end -->
             """, properties);

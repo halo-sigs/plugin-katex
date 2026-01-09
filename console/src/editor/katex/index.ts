@@ -8,24 +8,24 @@ import {
   Editor,
   ToolboxItem,
   type Range,
+  ExtensionOptions,
 } from "@halo-dev/richtext-editor";
 import KaTeXInlineView from "./KaTeXInlineView.vue";
 import KaTeXBlockView from "./KaTeXBlockView.vue";
 import { markRaw } from "vue";
 import TablerMath from "~icons/tabler/math";
+import { renderKatex } from "./render-katex";
 
 export const inlineInputRegex = /(?:^|\s)((?:\$)((?:[^$]+))(?:\$))$/;
 export const inlinePasteRegex = /(?:^|\s)((?:\$)((?:[^$]+))(?:\$))/g;
 export const blockInputRegex = /^\$\$[\s\n]$/;
 export const blockPasteRegex = /^\$\$((?:[^$]+))\$\$/g;
 
-export const ExtensionKatexInline = Node.create({
+export const ExtensionKatexInline = Node.create<ExtensionOptions>({
   name: "katexInline",
   group: "inline math",
   inline: true,
-  selectable: true,
   atom: true,
-  allowGapCursor: false,
   code: true,
 
   addAttributes() {
@@ -86,15 +86,41 @@ export const ExtensionKatexInline = Node.create({
     return [
       {
         tag: "span[math-inline]",
+        getAttrs: (element) => {
+          const content = element.getAttribute("data-content") || "";
+          return {
+            content,
+          };
+        },
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
+    const content = HTMLAttributes.content || "";
+
+    if (content) {
+      try {
+        const renderedHtml = renderKatex(content, true);
+
+        const span = document.createElement("span");
+        span.setAttribute("math-inline", "");
+        span.setAttribute("data-content", content);
+        span.innerHTML = renderedHtml;
+
+        return { dom: span };
+      } catch (error) {
+        console.error("KaTeX render error:", error);
+      }
+    }
+
     return [
       "span",
-      mergeAttributes(HTMLAttributes, { "math-inline": "" }),
-      `${HTMLAttributes.content}`,
+      mergeAttributes(HTMLAttributes, {
+        "math-inline": "",
+        "data-content": content,
+      }),
+      content,
     ];
   },
 
@@ -130,9 +156,9 @@ export const ExtensionKatexInline = Node.create({
   },
 });
 
-export const ExtensionKatexBlock = Node.create({
+export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
   name: "katexBlock",
-  group: "block math",
+  group: "block",
   selectable: true,
   defining: true,
   atom: true,
@@ -190,34 +216,6 @@ export const ExtensionKatexBlock = Node.create({
           },
         };
       },
-      getDraggable() {
-        return {
-          getRenderContainer({ dom, view }) {
-            console.log(dom);
-            console.log(view);
-            let container = dom;
-            while (container && container.tagName !== "P") {
-              container = container.parentElement as HTMLElement;
-            }
-            if (container) {
-              container = container.firstElementChild
-                ?.firstElementChild as HTMLElement;
-            }
-            let node;
-            if (container.firstElementChild) {
-              const pos = view.posAtDOM(container.firstElementChild, 0);
-              const $pos = view.state.doc.resolve(pos);
-              node = $pos.node();
-            }
-
-            return {
-              node: node,
-              el: container as HTMLElement,
-            };
-          },
-          allowPropagationDownward: true,
-        };
-      },
     };
   },
 
@@ -225,15 +223,45 @@ export const ExtensionKatexBlock = Node.create({
     return [
       {
         tag: "div[math-display]",
+        getAttrs: (node) => {
+          if (typeof node === "string") {
+            return false;
+          }
+          const element = node as HTMLElement;
+          const content = element.getAttribute("data-content") || "";
+          return {
+            content,
+          };
+        },
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
+    const content = HTMLAttributes.content || "";
+
+    if (typeof window !== "undefined" && content) {
+      try {
+        const renderedHtml = renderKatex(content, false);
+
+        const div = document.createElement("div");
+        div.setAttribute("math-display", "");
+        div.setAttribute("data-content", content);
+        div.innerHTML = renderedHtml;
+
+        return { dom: div };
+      } catch (error) {
+        console.error("KaTeX render error:", error);
+      }
+    }
+
     return [
       "div",
-      mergeAttributes(HTMLAttributes, { "math-display": "" }),
-      `${HTMLAttributes.content}`,
+      mergeAttributes(HTMLAttributes, {
+        "math-display": "",
+        "data-content": content,
+      }),
+      content,
     ];
   },
   addNodeView() {
