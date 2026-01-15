@@ -24,6 +24,7 @@ onMounted(() => {
 });
 
 function onEditorChange(value: string) {
+  console.log("value", value);
   props.updateAttributes({ content: value });
 }
 </script>

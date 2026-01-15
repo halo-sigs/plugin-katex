@@ -6,7 +6,7 @@ metadata:
     "store.halo.run/app-id": "app-ISCsX"
 spec:
   enabled: true
-  requires: ">=2.22.0"
+  requires: ">=2.22.2"
   author:
     name: Halo
     website: https://github.com/halo-dev
@@ -16,6 +16,8 @@ spec:
   issues: https://www.halo.run/store/apps/app-ISCsX?tab=comment
   displayName: "KaTeX"
   description: "为编辑器和文章渲染提供 KaTeX 支持"
+  settingName: plugin-katex-settings
+  configMapName: plugin-katex-configMap
   license:
     - name: "GPL-3.0"
       url: "https://github.com/halo-sigs/plugin-katex/blob/main/LICENSE"

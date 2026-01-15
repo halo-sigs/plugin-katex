@@ -19,6 +19,7 @@
     "@halo-dev/ui-plugin-bundler-kit": "^2.22.0",
     "@iconify/json": "^2.2.402",
     "@rsbuild/core": "^1.7.2",
+    "@rspack/core": "^1.7.2",
     "@rushstack/eslint-patch": "^1.14.1",
     "@types/katex": "^0.16.7",
     "@types/node": "^16.18.126",

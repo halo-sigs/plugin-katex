@@ -71,7 +71,7 @@ function onEditorChange(value: string) {
   </node-view-wrapper>
 </template>
 
-<style>
+<style scoped>
 .katex-block-container {
   border: 1px #e7e7e7 solid;
   border-radius: 4px;
