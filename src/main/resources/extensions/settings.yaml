@@ -11,7 +11,7 @@ spec:
           name: enable_frontend_katex
           id: enable_frontend_katex
           key: enable_frontend_katex
-          label: 启用 KaTex 前端渲染
+          label: 启用 KaTex 客户端渲染
           help: 使用非默认编辑器时，需要启用此项以确保公式正确渲染
           value: true
         - $formkit: text
