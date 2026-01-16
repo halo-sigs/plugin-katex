@@ -25,8 +25,10 @@ public class DefaultPostContentHandler implements ReactivePostContentHandler {
     @Override
     public Mono<PostContentContext> handle(PostContentContext contentContext) {
         return reactiveSettingFetcher.fetch("basic", BasicConfig.class).map(basicConfig -> {
-            injectJS(contentContext, basicConfig.getInline_selector(),
-                basicConfig.getDisplay_selector());
+            if (basicConfig.isEnable_frontend_katex()) {
+                injectJS(contentContext, basicConfig.getInline_selector(),
+                    basicConfig.getDisplay_selector());
+            }
             return contentContext;
         }).onErrorResume(e -> {
             log.error("KaTeX PostContent handle failed", Throwables.getRootCause(e));

@@ -13,43 +13,45 @@
 
 ## 用法说明
 
-### 默认编辑器
+### 在默认编辑器中使用
 
 1. 方式一：在默认编辑器中，使用 `$` 开头和结尾的语句将会被渲染为 KaTeX 行内公式，输入 `$$` 并回车可以插入 KaTeX 块级公式。
 2. 方式二：在编辑器顶部工具栏的工具箱中点击 **KaTeX 块级公式** 或者 **KaTeX 行内公式** 即可插入块级公式和行内公式。
 3. 方式三：在指令菜单（/）中选择 **KaTeX 块级公式** 或者 **KaTeX 行内公式** 即可插入块级公式和行内公式。
 
-### 文章页渲染公式
+在默认编辑器中使用，编辑器将会自动生成相应的 DOM 结构，无需进行其他配置。
 
-此插件安装之后，文章页使用 KaTeX.js 渲染公式，插件支持 2 个配置项。
+### 在非默认编辑器中使用
+
+在非默认编辑器中使用时，需要前往插件的设置页面，启用 KaTex 客户端渲染，插件支持 2 个配置项。
 
 1. 行内公式 CSS 选择器
 
-   CSS Selector 语法，用来查找渲染的行内公式 Dom。
+    CSS Selector 语法，用来查找渲染的行内公式 Dom。
 
-   默认值为：`[math-inline]`（本插件扩展默认编辑器生成的行内公式 Dom），如需兼容其他编辑器，则设置为相应的 Selector 即可。
+    默认值为：`[math-inline]`，根据实际所使用的编辑器设置为相应的 Selector 即可。
 
-   已知编辑器:
+    已知编辑器:
 
-   [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-inline`
+    [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-inline`
 
-   [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--inline`
+    [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--inline`
 
-   如同时使用多个编辑器，CSS Selector 之间用 `,` 隔开即可。
+    如同时使用多个编辑器，CSS Selector 之间用 `,` 隔开即可。
 
-   如：`[math-inline],.math-inline,.katex--inline`
+    如：`[math-inline],.math-inline,.katex--inline`
 
 2. 块级公式 CSS 选择器
 
-   CSS Selector 语法，用来查找渲染的块级公式 Dom。
+    CSS Selector 语法，用来查找渲染的块级公式 Dom。
 
-   默认值为：`[math-display]`
+    默认值为：`[math-display]`，根据实际所使用的编辑器设置为相应的 Selector 即可。
 
-   已知编辑器:
+    已知编辑器:
 
-   [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-display`
+    [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-display`
 
-   [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--display`
+    [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--display`
 
 ## 开发环境
 
@@ -73,6 +75,18 @@ cd path/to/plugin-katex
 ./gradlew.bat pnpmInstall
 ```
 
+### 使用 Halo Server 运行（需 Docker 环境）
+
+```bash
+# macOS / Linux
+./gradlew haloServer
+
+# Windows
+./gradlew.bat haloServer
+```
+
+### 使用 Halo Dev 运行
+
 ```bash
 # macOS / Linux
 ./gradlew build
@@ -85,13 +99,13 @@ cd path/to/plugin-katex
 
 ```yaml
 halo:
-  plugin:
-    runtime-mode: development
-    classes-directories:
-      - "build/classes"
-      - "build/resources"
-    lib-directories:
-      - "libs"
-    fixedPluginPath:
-      - "/path/to/plugin-katex"
+    plugin:
+        runtime-mode: development
+        classes-directories:
+            - "build/classes"
+            - "build/resources"
+        lib-directories:
+            - "libs"
+        fixedPluginPath:
+            - "/path/to/plugin-katex"
 ```

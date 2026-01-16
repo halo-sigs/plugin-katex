@@ -8,30 +8,35 @@ import {
   Editor,
   ToolboxItem,
   type Range,
+  ExtensionOptions,
 } from "@halo-dev/richtext-editor";
 import KaTeXInlineView from "./KaTeXInlineView.vue";
 import KaTeXBlockView from "./KaTeXBlockView.vue";
 import { markRaw } from "vue";
 import TablerMath from "~icons/tabler/math";
+import { renderKatex } from "./render-katex";
 
 export const inlineInputRegex = /(?:^|\s)((?:\$)((?:[^$]+))(?:\$))$/;
 export const inlinePasteRegex = /(?:^|\s)((?:\$)((?:[^$]+))(?:\$))/g;
 export const blockInputRegex = /^\$\$[\s\n]$/;
 export const blockPasteRegex = /^\$\$((?:[^$]+))\$\$/g;
 
-export const ExtensionKatexInline = Node.create({
+export const ExtensionKatexInline = Node.create<ExtensionOptions>({
   name: "katexInline",
   group: "inline math",
   inline: true,
-  selectable: true,
   atom: true,
-  allowGapCursor: false,
   code: true,
 
   addAttributes() {
     return {
       content: {
         default: "",
+        rendered: false,
+        isRequired: true,
+        parseHTML: (element: HTMLElement) => {
+          return findKatexRawContent(element);
+        },
       },
       editMode: {
         default: false,
@@ -87,14 +92,33 @@ export const ExtensionKatexInline = Node.create({
       {
         tag: "span[math-inline]",
       },
+      {
+        tag: "span.katex-inline",
+      },
     ];
   },
 
-  renderHTML({ HTMLAttributes }) {
+  renderHTML({ node, HTMLAttributes }) {
+    const content = node.attrs.content || "";
+
+    try {
+      const renderedHtml = renderKatex(content, true);
+
+      const span = document.createElement("span");
+      span.classList.add("katex-inline");
+      span.innerHTML = renderedHtml;
+
+      return { dom: span };
+    } catch (error) {
+      console.error("KaTeX render error:", error);
+    }
+
     return [
       "span",
-      mergeAttributes(HTMLAttributes, { "math-inline": "" }),
-      `${HTMLAttributes.content}`,
+      mergeAttributes(HTMLAttributes, {
+        "math-inline": "",
+      }),
+      content,
     ];
   },
 
@@ -130,9 +154,9 @@ export const ExtensionKatexInline = Node.create({
   },
 });
 
-export const ExtensionKatexBlock = Node.create({
+export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
   name: "katexBlock",
-  group: "block math",
+  group: "block",
   selectable: true,
   defining: true,
   atom: true,
@@ -143,6 +167,11 @@ export const ExtensionKatexBlock = Node.create({
     return {
       content: {
         default: "",
+        rendered: false,
+        isRequired: true,
+        parseHTML: (element: HTMLElement) => {
+          return findKatexRawContent(element);
+        },
       },
       editMode: {
         default: false,
@@ -190,34 +219,6 @@ export const ExtensionKatexBlock = Node.create({
           },
         };
       },
-      getDraggable() {
-        return {
-          getRenderContainer({ dom, view }) {
-            console.log(dom);
-            console.log(view);
-            let container = dom;
-            while (container && container.tagName !== "P") {
-              container = container.parentElement as HTMLElement;
-            }
-            if (container) {
-              container = container.firstElementChild
-                ?.firstElementChild as HTMLElement;
-            }
-            let node;
-            if (container.firstElementChild) {
-              const pos = view.posAtDOM(container.firstElementChild, 0);
-              const $pos = view.state.doc.resolve(pos);
-              node = $pos.node();
-            }
-
-            return {
-              node: node,
-              el: container as HTMLElement,
-            };
-          },
-          allowPropagationDownward: true,
-        };
-      },
     };
   },
 
@@ -225,15 +226,43 @@ export const ExtensionKatexBlock = Node.create({
     return [
       {
         tag: "div[math-display]",
+        getAttrs: (element: HTMLElement) => {
+          return {
+            content: element.textContent,
+          };
+        },
+      },
+      {
+        tag: "div.katex-block",
+        getAttrs: (element: HTMLElement) => {
+          return {
+            content: element.textContent,
+          };
+        },
       },
     ];
   },
 
-  renderHTML({ HTMLAttributes }) {
+  renderHTML({ node, HTMLAttributes }) {
+    const content = node.attrs.content || "";
+    try {
+      const renderedHtml = renderKatex(content, false);
+
+      const div = document.createElement("div");
+      div.classList.add("katex-block");
+      div.innerHTML = renderedHtml;
+
+      return { dom: div };
+    } catch (error) {
+      console.error("KaTeX render error:", error);
+    }
+
     return [
       "div",
-      mergeAttributes(HTMLAttributes, { "math-display": "" }),
-      `${HTMLAttributes.content}`,
+      mergeAttributes(HTMLAttributes, {
+        "math-display": "",
+      }),
+      content,
     ];
   },
   addNodeView() {
@@ -268,3 +297,20 @@ export const ExtensionKatexBlock = Node.create({
     ];
   },
 });
+
+const findKatexRawContent = (element: HTMLElement) => {
+  const annotation = element.querySelector("annotation");
+  if (annotation) {
+    return annotation.textContent;
+  }
+
+  if (element.hasAttribute("content")) {
+    return element.getAttribute("content");
+  }
+
+  if (element.firstChild?.nodeType === 3) {
+    return element.textContent;
+  }
+
+  return "";
+};

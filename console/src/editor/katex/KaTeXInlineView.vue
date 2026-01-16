@@ -1,35 +1,30 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { nodeViewProps, NodeViewWrapper } from "@halo-dev/richtext-editor";
-import katex from "katex";
 import { VDropdown } from "@halo-dev/components";
+import { renderKatex } from "./render-katex";
 
 const props = defineProps(nodeViewProps);
 
-const renderedKatex = computed(() => {
-  if (!props.node.attrs.content) {
-    return "";
-  }
-  return katex.renderToString(props.node.attrs.content.toString(), {
-    throwOnError: false,
-    strict: false,
-    displayMode: false,
-    maxSize: 300,
-  });
+const content = computed(() => {
+  return props.node.attrs.content || "";
 });
 
-const clickKatex = () => {
-  props.editor.commands.setNodeSelection(props.getPos());
-};
-
-const katexNodeViewContentRef = ref<Ref<HTMLElement | null>>();
-onMounted(() => {
-  if (props.node.attrs.editMode) {
-    katexNodeViewContentRef.value?.click();
+const renderedKatex = computed(() => {
+  if (!content.value) {
+    return "";
   }
+  return renderKatex(content.value, true);
+});
+
+const showEditor = ref(false);
+
+onMounted(() => {
+  showEditor.value = props.node.attrs.editMode;
 });
 
 function onEditorChange(value: string) {
+  console.log("value", value);
   props.updateAttributes({ content: value });
 }
 </script>
@@ -40,23 +35,24 @@ function onEditorChange(value: string) {
     contenteditable="false"
     :class="{ 'katex-node-view-selected': props.selected }"
   >
-    <VDropdown :classes="['no-padding']" :distance="12" placement="bottom">
-      <div
-        ref="katexNodeViewContentRef"
-        class="katex-node-view-content-wrapper"
-        @click="clickKatex"
-      >
+    <VDropdown
+      :classes="['no-padding']"
+      :distance="12"
+      placement="bottom"
+      :shown="showEditor"
+    >
+      <div class="katex-node-view-content-wrapper">
         <span
           v-if="node.attrs.content"
           contenteditable="false"
           v-html="renderedKatex"
-        />
+        ></span>
         <span v-else> 添加LaTeX公式 </span>
       </div>
       <template #popper>
         <div class="katex-inline-view-code">
           <VCodemirror
-            :model-value="node.attrs.content"
+            :model-value="content"
             height="180px"
             @change="onEditorChange"
           />

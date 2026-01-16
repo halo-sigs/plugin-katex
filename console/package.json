@@ -7,18 +7,19 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@halo-dev/components": "^2.21.0",
+    "@halo-dev/components": "^2.22.0",
     "@halo-dev/console-shared": "^2.21.0",
-    "@halo-dev/richtext-editor": "2.20.0",
+    "@halo-dev/richtext-editor": "^2.22.0",
     "@vueuse/core": "^10.11.1",
     "floating-vue": "2.0.0-beta.24",
     "katex": "^0.16.25",
     "vue": "^3.5.22"
   },
   "devDependencies": {
-    "@halo-dev/ui-plugin-bundler-kit": "2.21.2",
+    "@halo-dev/ui-plugin-bundler-kit": "^2.22.0",
     "@iconify/json": "^2.2.402",
-    "@rsbuild/core": "^1.6.0",
+    "@rsbuild/core": "^1.7.2",
+    "@rspack/core": "^1.7.2",
     "@rushstack/eslint-patch": "^1.14.1",
     "@types/katex": "^0.16.7",
     "@types/node": "^16.18.126",
