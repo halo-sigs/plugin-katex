@@ -33,6 +33,12 @@ export const ExtensionKatexInline = Node.create<ExtensionOptions>({
       content: {
         default: "",
         rendered: false,
+        isRequired: true,
+        parseHTML: (element: HTMLElement) => {
+          return {
+            content: findKatexRawContent(element),
+          };
+        },
       },
       editMode: {
         default: false,
@@ -87,11 +93,9 @@ export const ExtensionKatexInline = Node.create<ExtensionOptions>({
     return [
       {
         tag: "span[math-inline]",
-        getAttrs: (element) => {
-          return {
-            content: findKatexRawContent(element),
-          };
-        },
+      },
+      {
+        tag: "span.katex-inline",
       },
     ];
   },
@@ -103,7 +107,7 @@ export const ExtensionKatexInline = Node.create<ExtensionOptions>({
       const renderedHtml = renderKatex(content, true);
 
       const span = document.createElement("span");
-      span.setAttribute("math-inline", "");
+      span.classList.add("katex-inline");
       span.innerHTML = renderedHtml;
 
       return { dom: span };
@@ -167,6 +171,11 @@ export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
         default: "",
         rendered: false,
         isRequired: true,
+        parseHTML: (element: HTMLElement) => {
+          return {
+            content: findKatexRawContent(element),
+          };
+        },
       },
       editMode: {
         default: false,
@@ -223,7 +232,15 @@ export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
         tag: "div[math-display]",
         getAttrs: (element: HTMLElement) => {
           return {
-            content: findKatexRawContent(element),
+            content: element.textContent,
+          };
+        },
+      },
+      {
+        tag: "div.katex-block",
+        getAttrs: (element: HTMLElement) => {
+          return {
+            content: element.textContent,
           };
         },
       },
@@ -236,7 +253,7 @@ export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
       const renderedHtml = renderKatex(content, false);
 
       const div = document.createElement("div");
-      div.setAttribute("math-display", "");
+      div.classList.add("katex-block");
       div.innerHTML = renderedHtml;
 
       return { dom: div };
