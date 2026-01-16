@@ -25,8 +25,10 @@ public class DefaultSinglePageContentHandler implements ReactiveSinglePageConten
     @Override
     public Mono<SinglePageContentContext> handle(SinglePageContentContext contentContext) {
         return reactiveSettingFetcher.fetch("basic", BasicConfig.class).map(basicConfig -> {
-            injectJS(contentContext, basicConfig.getInline_selector(),
-                basicConfig.getDisplay_selector());
+            if (basicConfig.isEnable_frontend_katex()) {
+                injectJS(contentContext, basicConfig.getInline_selector(),
+                    basicConfig.getDisplay_selector());
+            }
             return contentContext;
         }).onErrorResume(e -> {
             log.error("KaTeX PostContent handle failed", Throwables.getRootCause(e));

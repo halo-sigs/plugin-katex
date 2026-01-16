@@ -1,24 +1,23 @@
 <script lang="ts" setup>
 import { NodeViewWrapper, nodeViewProps } from "@halo-dev/richtext-editor";
-import katex from "katex";
 import { computed } from "vue";
 import IcOutlineTipsAndUpdates from "~icons/ic/outline-tips-and-updates";
 import IcOutlineFullscreen from "~icons/ic/outline-fullscreen";
 import IcOutlineFullscreenExit from "~icons/ic/outline-fullscreen-exit";
 import { ref } from "vue";
+import { renderKatex } from "./render-katex";
 
 const props = defineProps(nodeViewProps);
 
+const content = computed(() => {
+  return props.node.attrs.content || "";
+});
+
 const renderedKatex = computed(() => {
-  if (!props.node.attrs.content) {
+  if (!content.value) {
     return "";
   }
-  return katex.renderToString(props.node.attrs.content.toString(), {
-    throwOnError: false,
-    strict: false,
-    displayMode: true,
-    maxSize: 300,
-  });
+  return renderKatex(content.value, false);
 });
 
 const fullscreen = ref(false);
@@ -58,7 +57,7 @@ function onEditorChange(value: string) {
     <div class="katex-block-editor-panel">
       <div class="katex-block-code">
         <VCodemirror
-          :model-value="node.attrs.content"
+          :model-value="content"
           height="100%"
           @change="onEditorChange"
         />
@@ -72,7 +71,7 @@ function onEditorChange(value: string) {
   </node-view-wrapper>
 </template>
 
-<style>
+<style scoped>
 .katex-block-container {
   border: 1px #e7e7e7 solid;
   border-radius: 4px;
