@@ -35,9 +35,7 @@ export const ExtensionKatexInline = Node.create<ExtensionOptions>({
         rendered: false,
         isRequired: true,
         parseHTML: (element: HTMLElement) => {
-          return {
-            content: findKatexRawContent(element),
-          };
+          return findKatexRawContent(element);
         },
       },
       editMode: {
@@ -172,9 +170,7 @@ export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
         rendered: false,
         isRequired: true,
         parseHTML: (element: HTMLElement) => {
-          return {
-            content: findKatexRawContent(element),
-          };
+          return findKatexRawContent(element);
         },
       },
       editMode: {
