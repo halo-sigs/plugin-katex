@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { NodeViewWrapper, nodeViewProps } from "@halo-dev/richtext-editor";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import IcOutlineTipsAndUpdates from "~icons/ic/outline-tips-and-updates";
 import IcOutlineFullscreen from "~icons/ic/outline-fullscreen";
 import IcOutlineFullscreenExit from "~icons/ic/outline-fullscreen-exit";
 import { ref } from "vue";
+import { useMagicKeys } from "@vueuse/core";
 import { renderKatex } from "./render-katex";
 
 const props = defineProps(nodeViewProps);
@@ -21,6 +22,14 @@ const renderedKatex = computed(() => {
 });
 
 const fullscreen = ref(false);
+
+const { escape } = useMagicKeys();
+
+watch(escape, (value) => {
+  if (value && fullscreen.value) {
+    fullscreen.value = false;
+  }
+});
 
 function onEditorChange(value: string) {
   props.updateAttributes({ content: value });
@@ -73,6 +82,8 @@ function onEditorChange(value: string) {
 
 <style scoped>
 .katex-block-container {
+  display: flex;
+  flex-direction: column;
   border: 1px #e7e7e7 solid;
   border-radius: 4px;
   overflow: hidden;
@@ -84,6 +95,10 @@ function onEditorChange(value: string) {
   display: flex;
   padding: 5px 10px;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
 }
 
 .katex-block-nav-start {
@@ -103,6 +118,7 @@ function onEditorChange(value: string) {
   grid-template-columns: 1fr 1fr;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .katex-block-code {
