@@ -38,6 +38,9 @@ export const ExtensionKatexInline = Node.create<ExtensionOptions>({
           return findKatexRawContent(element);
         },
       },
+      style: {
+        default: "margin: 0 0.05em;",
+      },
       editMode: {
         default: false,
         rendered: false,
@@ -105,8 +108,16 @@ export const ExtensionKatexInline = Node.create<ExtensionOptions>({
       const renderedHtml = renderKatex(content, true);
 
       const span = document.createElement("span");
-      span.classList.add("katex-inline");
       span.innerHTML = renderedHtml;
+
+      const attributes = mergeAttributes(HTMLAttributes, {
+        class: "katex-inline",
+      });
+      Object.entries(attributes).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          span.setAttribute(key, String(value));
+        }
+      });
 
       return { dom: span };
     } catch (error) {
@@ -176,6 +187,9 @@ export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
       editMode: {
         default: false,
         rendered: false,
+      },
+      style: {
+        default: "text-align: center; display: block; margin: 1em 0;",
       },
     };
   },
@@ -249,8 +263,16 @@ export const ExtensionKatexBlock = Node.create<ExtensionOptions>({
       const renderedHtml = renderKatex(content, false);
 
       const div = document.createElement("div");
-      div.classList.add("katex-block");
       div.innerHTML = renderedHtml;
+
+      const attributes = mergeAttributes(HTMLAttributes, {
+        class: "katex-block",
+      });
+      Object.entries(attributes).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          div.setAttribute(key, String(value));
+        }
+      });
 
       return { dom: div };
     } catch (error) {
