@@ -1,12 +1,11 @@
 plugins {
     id 'java'
     id "com.github.node-gradle.node" version "7.0.2"
-    id "io.freefair.lombok" version "8.0.1"
-    id "run.halo.plugin.devtools" version "0.5.0"
+    id "io.freefair.lombok" version "9.2.0"
+    id "run.halo.plugin.devtools" version "0.6.2"
 }
 
 group 'run.halo.katex'
-sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -27,8 +26,15 @@ test {
     useJUnitPlatform()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
+    options.release = 21
 }
 
 node {
