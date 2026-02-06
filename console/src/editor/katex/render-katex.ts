@@ -6,6 +6,6 @@ export function renderKatex(content: string, isInline: boolean) {
     strict: false,
     displayMode: !isInline,
     maxSize: 300,
-    output: "mathml",
+    output: "html",
   });
 }
