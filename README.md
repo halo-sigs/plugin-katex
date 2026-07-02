@@ -33,13 +33,14 @@
 
     已知编辑器:
 
-    [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-inline`
-
-    [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--inline`
+    - 默认编辑器保存时渲染失败标记：`[math-inline]`。
+    - [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-inline`
+    - [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--inline`
+    - [Vditor](https://www.halo.run/store/apps/app-uBcYw)：`span.language-math`
 
     如同时使用多个编辑器，CSS Selector 之间用 `,` 隔开即可。
 
-    如：`[math-inline],.math-inline,.katex--inline`
+    如：`[math-inline],.math-inline,.katex--inline,span.language-math`
 
 2. 块级公式 CSS 选择器
 
@@ -49,9 +50,10 @@
 
     已知编辑器:
 
-    [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-display`
-
-    [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--display`
+    - 默认编辑器保存时渲染失败标记：`[math-display]`。
+    - [ByteMD](https://www.halo.run/store/apps/app-HTyhC)：`.math-display`
+    - [StackEdit](https://www.halo.run/store/apps/app-hDXMG)：`.katex--display`
+    - [Vditor](https://www.halo.run/store/apps/app-uBcYw)：`div.language-math`
 
 ## 开发环境
 
